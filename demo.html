@@ -13,14 +13,55 @@
 </head>
 
 <body>
-    <main>
 
-    </main>
+    <body class="bg-green-50 min-h-screen">
 
-    <script>
+        <!-- Navbar -->
+        <nav class="bg-white shadow px-6 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <img src="assets/logo.png" alt="Logo" class="w-10 h-10 rounded" />
+                <span class="font-bold text-green-900 text-xl">Emergency<br>Service</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <!-- Heart badge -->
+                <span id="heartBadge"
+                    class="heart-badge flex items-center gap-2 font-bold text-lg px-8 py-3 rounded-full"
+                    style="background-color: #dcfce7">
+                    <span id="heartCount" class="text-black">0</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="#E53935" viewBox="0 0 24 24">
+                        <path
+                            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg>
+                </span>
+                <!-- Coin badge -->
+                <span id="heartBadge"
+                    class="heart-badge flex items-center gap-2 font-bold text-lg px-5 py-3 rounded-full"
+                    style="background-color: #dcfce7">
+                    <span id="coinCount" class="text-black">100</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" fill="#FFD600" />
+                        <circle cx="12" cy="12" r="7" fill="#FFB300" />
+                        <path
+                            d="M12 8L13.09 10.26L15.66 10.62L13.9 12.24L14.32 14.8L12 13.52L9.68 14.8L10.1 12.24L8.34 10.62L10.91 10.26L12 8Z"
+                            fill="#FF8F00" />
+                    </svg>
+                </span>
+                <!-- Copy badge -->
+                <button type="button"
+                    class="flex items-center font-semibold px-7 py-3 bg-green-600 text-white rounded-full text-lg transition">
+                    <span id="copyCount" class="mr-2">0</span> Copy
+                </button>
+            </div>
+        </nav>
 
-    </script>
+        <main>
 
-</body>
+        </main>
+
+        <script>
+
+        </script>
+
+    </body>
 
 </html>
