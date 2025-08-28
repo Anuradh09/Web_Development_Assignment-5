@@ -73,7 +73,6 @@
     console.log("Clicked:", e.target.textContent);
     }
     });
-
     Even if new <li> items are added later, the parent <ul> can still handle clicks.
 
 5.  Difference between preventDefault() and stopPropagation():
