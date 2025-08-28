@@ -88,11 +88,224 @@
                 <ul id="historyList" class="overflow-y-auto flex-1 divide-y divide-gray-200"></ul>
             </section>
         </main>
-
-
         <script>
+            // Emergency services data
+            const services = [{
+                    iconSrc: './assets/emergency.png',
+                    bnName: 'National Emergency Number',
+                    enName: 'National Emergency',
+                    number: '999',
+                    badge: 'All',
+                    category: 'National Emergency'
+                },
+                {
+                    iconSrc: './assets/police.png',
+                    bnName: 'Police Helpline Number',
+                    enName: 'Police',
+                    number: '999',
+                    badge: 'Police',
+                    category: 'Police'
+                },
+                {
+                    iconSrc: './assets/fire-service.png',
+                    bnName: 'Fire Service Number',
+                    enName: 'Fire Service',
+                    number: '999',
+                    badge: 'Fire',
+                    category: 'Fire Service'
+                },
+                {
+                    iconSrc: './assets/ambulance.png',
+                    bnName: 'Ambulance Service',
+                    enName: 'Ambulance',
+                    number: '1994-999999',
+                    badge: 'Health',
+                    category: 'Ambulance'
+                },
+                {
+                    iconSrc: './assets/emergency.png',
+                    bnName: 'Women & Child Helpline',
+                    enName: 'Women & Child Helpline',
+                    number: '109',
+                    badge: 'Help',
+                    category: 'Women & Child Helpline'
+                },
+                {
+                    iconSrc: './assets/emergency.png',
+                    bnName: 'Anti-Corruption Helpline',
+                    enName: 'Anti-Corruption',
+                    number: '106',
+                    badge: 'Govt.',
+                    category: 'Anti-Corruption'
+                },
+                {
+                    iconSrc: './assets/emergency.png',
+                    bnName: 'Electricity Helpline',
+                    enName: 'Electricity Outage',
+                    number: '16216',
+                    badge: 'Electricity',
+                    category: 'Electricity Outage'
+                },
+                {
+                    iconSrc: './assets/emergency.png',
+                    bnName: 'Brac Helpline',
+                    enName: 'Brac',
+                    number: '16445',
+                    badge: 'NGO',
+                    category: 'Brac'
+                },
+                {
+                    iconSrc: './assets/emergency.png', // Local path for Bangladesh Railway Helpline icon
+                    bnName: 'Bangladesh Railway Helpline',
+                    enName: 'Bangladesh Railway',
+                    number: '163',
+                    badge: 'Travel',
+                    category: 'Bangladesh Railway'
+                }
+            ];
 
+            let heartCount = 0,
+                coinCount = 100,
+                copyCount = 0,
+                callHistory = [];
+
+            // DOM references
+            const cardSection = document.getElementById('cardSection');
+            const heartCountEl = document.getElementById('heartCount');
+            const coinCountEl = document.getElementById('coinCount');
+            const copyCountEl = document.getElementById('copyCount');
+            const historyList = document.getElementById('historyList');
+            const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+            // Render cards
+            function renderCards() {
+                cardSection.innerHTML = '';
+                services.forEach(service => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white rounded-lg shadow p-5 flex flex-col gap-3';
+                    card.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <img src="${service.iconSrc}" alt="${service.enName} icon" class="w-10 h-10 rounded bg-green-100 p-1" />
+                        <div class="flex flex-col flex-grow">
+                        </div>
+                        <button title="Add to favorites" class="btn-heart">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                class="w-6 h-6 text-gray-400 hover:text-red-600 transition" viewBox="0 0 24 24">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="flex flex-col flex-grow">
+                            <span class="font-semibold text-black">${service.bnName}</span>
+                            <span class="text-sm text-gray-500">${service.enName}</span>
+                    </div>
+                    <div class="text-2xl font-bold mt-2">${service.number}</div>
+                    <span class="self-start text-xs bg-gray-200 rounded px-3 py-1 font-semibold text-gray-700 mt-2">${service.badge}</span>
+                    <div class="flex gap-3 mt-4">
+                        <button title="Copy Number" class="btn-copy rounded border border-gray-300 bg-gray-50 hover:bg-gray-100 text-green-700 flex items-center gap-2 px-3 py-2 flex-grow font-semibold">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5" viewBox="0 0 24 24">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                <rect x="3" y="3" width="13" height="13" rx="2" ry="2" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button title="Call Number"
+                            class="btn-call rounded bg-green-600 hover:bg-green-700 text-white flex items-center gap-2 px-3 py-2 flex-grow font-semibold">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                            Call
+                        </button>
+                    </div>
+                `;
+                    cardSection.appendChild(card);
+                });
+            }
+
+            function updateCounts() {
+                heartCountEl.textContent = heartCount;
+                coinCountEl.textContent = coinCount;
+                copyCountEl.textContent = copyCount;
+            }
+
+            // Render call history list
+            function renderCallHistory() {
+                historyList.innerHTML = '';
+                if (callHistory.length === 0) {
+                    const empty = document.createElement('li');
+                    empty.className = 'text-gray-400 text-center py-6';
+                    empty.textContent = 'No calls yet.';
+                    historyList.appendChild(empty);
+                    return;
+                }
+                callHistory.forEach(call => {
+                    const li = document.createElement('li');
+                    li.className = 'flex justify-between items-center py-3';
+                    li.innerHTML = `
+                    <div>
+                        <h4 class="font-semibold">${call.name}</h4>
+                        <p class="text-xs text-gray-600">${call.number}</p>
+                    </div>
+                    <div class="text-gray-500 text-xs">${call.time}</div>
+                `;
+                    historyList.appendChild(li);
+                });
+            }
+
+            // Event listener for card buttons
+            cardSection.addEventListener('click', (e) => {
+                const heartBtn = e.target.closest('.btn-heart');
+                if (heartBtn) {
+                    heartCount++;
+                    updateCounts();
+                    heartBtn.querySelector('svg').classList.add('text-red-600');
+                    return;
+                }
+                const copyBtn = e.target.closest('.btn-copy');
+                if (copyBtn) {
+                    const card = copyBtn.closest('div.bg-white');
+                    const number = card.querySelector('div.text-2xl').textContent.trim();
+                    navigator.clipboard.writeText(number).then(() => {
+                        alert(`Copied: ${number}`);
+                        copyCount++;
+                        updateCounts();
+                    });
+                    return;
+                }
+                const callBtn = e.target.closest('.btn-call');
+                if (callBtn) {
+                    if (coinCount < 20) {
+                        alert('Not enough coins to make a call!');
+                        return;
+                    }
+                    const card = callBtn.closest('div.bg-white');
+                    const name = card.querySelector('span.font-semibold').textContent.trim();
+                    const number = card.querySelector('div.text-2xl').textContent.trim();
+                    alert(`Calling ${name} (${number})`);
+                    coinCount -= 20;
+                    updateCounts();
+                    const now = new Date();
+                    callHistory.unshift({
+                        name,
+                        number,
+                        time: now.toLocaleTimeString()
+                    });
+                    renderCallHistory();
+                    return;
+                }
+            });
+
+            clearHistoryBtn.addEventListener('click', () => {
+                callHistory = [];
+                renderCallHistory();
+            });
+
+            renderCards();
+            updateCounts();
+            renderCallHistory();
         </script>
+
 
     </body>
 
